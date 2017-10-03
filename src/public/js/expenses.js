@@ -30,10 +30,14 @@ function updateValues() {
     let details = [];
 
     expenseElements.forEach(e => {
-        details.push({
-            name: e.querySelector('.form-control.name').value,
-            cost: parseInt(e.querySelector('.form-control.cost').value,10)
-        });
+        const name = e.querySelector('.form-control.name').value;
+        const cost = e.querySelector('.form-control.cost').value;
+        if (name && cost) {
+            details.push({
+                name: e.querySelector('.form-control.name').value,
+                cost: parseInt(cost, 10)
+            });
+        }
     });
 
     expense.details = details;
@@ -66,7 +70,7 @@ function updateExpensesView() {
 
     const expenseName = document.querySelector('#expense-name');
     expenseName.value = expense.name;
-    expenseName.addEventListener('input', () => { updateName(); });
+
     expense.details.forEach(detail => {
         const e = createExpenseDetailElement(detail);
         e.addEventListener('input', () => { updateValues(); });
@@ -79,4 +83,16 @@ function updateExpensesView() {
 
 document.addEventListener('DOMContentLoaded', function() {
     updateExpensesView();
+
+    const expenseName = document.querySelector('#expense-name');
+    expenseName.addEventListener('input', () => { updateName(); });
+
+    const addBtn = document.querySelector('#add');
+    const expensesListElement = document.querySelector('#expenses-list');
+
+    addBtn.addEventListener('mousedown', () => { 
+        const e = createExpenseDetailElement({ name: '', cost: 0 });
+        e.addEventListener('input', () => { updateValues(); });
+        expensesListElement.appendChild(e);
+     });
 }, false);
