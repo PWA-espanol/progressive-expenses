@@ -40,6 +40,7 @@ function updateValues() {
 
     const totalField = expensesListElement.querySelector('.total-row .total');
     totalField.innerHTML = getExpenseTotal(expense);
+    saveExpense(expense);
 }
 
 function updateExpensesView() {

@@ -3,6 +3,21 @@ function saveExpenses(expenses) {
     localStorage.setItem("expenses", expensesString);
 }
 
+function saveExpense(expense) {
+    const expenses = getExpenses();
+    for (var index = 0; index < expenses.length; index++) {
+        var element = expenses[index];
+        if (element.id === expense.id) {
+            element.name = expense.name;
+            element.details = expense.details;
+            return saveExpenses(expenses);
+        }
+    }
+
+    expenses.push(expense);
+    saveExpenses(expenses);
+}
+
 function getExpenses() {
     const expenses = localStorage.getItem("expenses");
 
