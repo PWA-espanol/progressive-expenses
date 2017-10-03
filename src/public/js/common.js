@@ -50,6 +50,17 @@ function getExpense(expenseId) {
     return (result && result.length > 0) ? result[0] : undefined;
 }
 
+
+function createNewExpense() {
+    const expenses = getExpenses();
+    let maxId = Math.max.apply(Math, expenses.map(o => o.id ));
+    return { 
+        id: maxId + 1,
+        name: 'Nombre',
+        details: []
+    };
+}
+
 function getExpenseTotal(expense) {
     let total = 0;
     if (expense && expense.details) {

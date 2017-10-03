@@ -1,7 +1,9 @@
 function createExpenseElement(expense) {
     const element = document.createElement('li');
     element.className = 'list-group-item expense';
-    element.innerHTML = `<a href=\"/expense/${expense.id}\">${expense.name}<span class="total">${getExpenseTotal(expense)}</span></a>`;
+    element.innerHTML = `<a href="/expense/${expense.id}">${expense.name}
+                            <span class="total">${getExpenseTotal(expense)}</span>
+                        </a>`;
 
     return element;    
 }
@@ -25,4 +27,14 @@ function updateHomeView() {
 
 document.addEventListener('DOMContentLoaded', function() {
     updateHomeView();
+
+    const addBtn = document.querySelector('#add');
+    const expensesListElement = document.querySelector('#expenses-list');
+
+    addBtn.addEventListener('mousedown', () => {
+        const newExpense = createNewExpense();
+        const e = createExpenseElement(newExpense);
+        saveExpense(newExpense);
+        expensesListElement.appendChild(e);
+     });
 }, false);
