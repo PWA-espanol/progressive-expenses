@@ -5,10 +5,10 @@ function createExpenseDetailElement(detail) {
     `<form>
         <div class="form-row">
             <div class="col">
-                <input type="text" class="form-control name" value="${detail.name}">
+                <input type="text" class="form-control name" value="${detail.name}" required>
             </div>
             <div class="col">
-                <input type="text" class="form-control cost" value="${detail.cost}">
+                <input type="number" class="form-control cost" value="${detail.cost}" required>
             </div>
         </div>
     </form>`;
@@ -43,6 +43,16 @@ function updateValues() {
     saveExpense(expense);
 }
 
+function updateName() {
+    const expenseId = getExpenseId();
+    const expense = getExpense(expenseId);
+    const expenseName = document.querySelector('#expense-name');
+
+    expense.name = expenseName.value;
+
+    saveExpense(expense);
+}
+
 function updateExpensesView() {
     const expenseId = getExpenseId();
     const expensesListElement = document.querySelector('#expenses-list');
@@ -55,7 +65,8 @@ function updateExpensesView() {
     const expense = getExpense(expenseId);
 
     const expenseName = document.querySelector('#expense-name');
-    expenseName.innerHTML = expense.name;
+    expenseName.value = expense.name;
+    expenseName.addEventListener('input', () => { updateName(); });
     expense.details.forEach(detail => {
         const e = createExpenseDetailElement(detail);
         e.addEventListener('input', () => { updateValues(); });

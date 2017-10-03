@@ -25,11 +25,17 @@
     <div class="main-container">
         <div class="container">
           <div class="jumbotron">
-            <h1 id="expense-name" class="display-3">Expense name</h1>
+            <form>
+              <div class="form-row">
+                <div class="col">
+                  <input type="text" id="expense-name" class="form-control form-control-lg" value="name" required>
+                </div>
+              </div>
+            </form>
           </div>
     
           <div class="row justify-content-center">
-            <div class="col-10">
+            <div class="col col-sm-10">
               <ul id="expenses-list" class="list-group">
                 <li class="list-group-item total-row">Total <span class="total"></span></li>
               </ul>
