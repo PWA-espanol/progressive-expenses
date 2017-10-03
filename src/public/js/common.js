@@ -1,22 +1,33 @@
-let expensesStorage = [{
-    id: 1,
-    name: "Super",
-    details: [
-        { name: "Gaseosas", cost: 10 },
-        { name: "Galletas", cost: 20 },
-        { name: "Pan", cost: 5 },
-    ]
-}, {
-    id: 2,
-    name: "Viaje",
-    details: [
-        { name: "Tren", cost: 10 },
-        { name: "Colectivo", cost: 5 }
-    ]
-}];
+function saveExpenses(expenses) {
+    const expensesString = JSON.stringify(expenses);
+    localStorage.setItem("expenses", expensesString);
+}
 
 function getExpenses() {
-    return expensesStorage || [];
+    const expenses = localStorage.getItem("expenses");
+
+    if (expenses && expenses.length > 0) {
+        return JSON.parse(expenses);
+    } else {
+        const expensesStorage = [{
+            id: 1,
+            name: "Super",
+            details: [
+                { name: "Gaseosas", cost: 10 },
+                { name: "Galletas", cost: 20 },
+                { name: "Pan", cost: 5 },
+            ]
+        }, {
+            id: 2,
+            name: "Viaje",
+            details: [
+                { name: "Tren", cost: 10 },
+                { name: "Colectivo", cost: 5 }
+            ]
+        }];
+        saveExpenses(expensesStorage);
+        return expensesStorage;
+    }
 }
 
 function getExpense(expenseId) {
