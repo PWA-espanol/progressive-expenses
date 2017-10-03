@@ -17,3 +17,7 @@
     right: 0;
     padding: 0 2rem;
 }
+
+.form-control.cost {
+    text-align: right;
+}
