@@ -31,7 +31,7 @@ function getExpenses() {
 }
 
 function getExpense(expenseId) {
-    const result = expensesStorage.filter( expense => expense.id === expenseId);
+    const result = getExpenses().filter( expense => expense.id === expenseId);
     return (result && result.length > 0) ? result[0] : undefined;
 }
 
