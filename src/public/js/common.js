@@ -43,14 +43,16 @@ function saveExpense(expense) {
     });
 }
 
-function getExpenses() {
-    return serverClient(`${serverUrl}api/expense`)
-            .then(response => response.json());
+function getExpenses(cb) {
+    serverClient(`${serverUrl}api/expense`)
+        .then(response => response.json())
+        .then(cb);
 }
 
-function getExpense(expenseId) {
-    return serverClient(`${serverUrl}api/expense/${expenseId}`)
-            .then(response => response.json());
+function getExpense(expenseId, cb) {
+    serverClient(`${serverUrl}api/expense/${expenseId}`)
+            .then(response => response.json())
+            .then(cb);
 }
 
 function createNewExpense() {

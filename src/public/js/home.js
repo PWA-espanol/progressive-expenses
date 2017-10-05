@@ -12,7 +12,7 @@ function updateHomeView() {
     const expensesListElement = document.querySelector('#expenses-list');
     const expenseElements = expensesListElement.querySelectorAll('.expense');
 
-    getExpenses().then(expenses => {
+    getExpenses(expenses => {
         expenseElements.forEach(e => {
             expensesListElement.removeChild(e);
         });

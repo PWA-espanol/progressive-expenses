@@ -13,6 +13,8 @@ function createExpenseDetailElement(detail) {
         </div>
     </form>`;
 
+    element.addEventListener('input', () => { updateValues(); });
+
     return element;
 }
 
@@ -39,7 +41,7 @@ function updateValues() {
         }
     });
 
-    getExpense(expenseId).then(expense => {
+    getExpense(expenseId, expense => {
         expense.details = details;
 
         const totalField = expensesListElement.querySelector('.total-row .total');
@@ -51,7 +53,7 @@ function updateValues() {
 
 function updateName() {
     const expenseId = getExpenseId();
-    getExpense(expenseId).then(expense => {
+    getExpense(expenseId, expense => {
         const expenseName = document.querySelector('#expense-name');
         expense.name = expenseName.value;
         saveExpense(expense);
@@ -63,7 +65,7 @@ function updateExpensesView() {
     const expensesListElement = document.querySelector('#expenses-list');
     const expenseElements = expensesListElement.querySelectorAll('.expense');
 
-    getExpense(expenseId).then(expense => {
+    getExpense(expenseId, expense => {
         expenseElements.forEach(e => {
             expensesListElement.removeChild(e);
         });
@@ -73,7 +75,6 @@ function updateExpensesView() {
     
         expense.details.forEach(detail => {
             const e = createExpenseDetailElement(detail);
-            e.addEventListener('input', () => { updateValues(); });
             expensesListElement.appendChild(e);
         });
     
@@ -93,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     addBtn.addEventListener('mousedown', () => { 
         const e = createExpenseDetailElement({ name: '', cost: 0 });
-        e.addEventListener('input', () => { updateValues(); });
         expensesListElement.appendChild(e);
      });
 }, false);
