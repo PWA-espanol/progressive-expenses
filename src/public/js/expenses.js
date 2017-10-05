@@ -24,7 +24,6 @@ function getExpenseId() {
 
 function updateValues() {
     const expenseId = getExpenseId();
-    const expense = getExpense(expenseId);
     const expensesListElement = document.querySelector('#expenses-list');
     const expenseElements = expensesListElement.querySelectorAll('.expense');
     let details = [];
@@ -40,21 +39,23 @@ function updateValues() {
         }
     });
 
-    expense.details = details;
+    getExpense(expenseId).then(expense => {
+        expense.details = details;
 
-    const totalField = expensesListElement.querySelector('.total-row .total');
-    totalField.innerHTML = getExpenseTotal(expense);
-    saveExpense(expense);
+        const totalField = expensesListElement.querySelector('.total-row .total');
+        totalField.innerHTML = getExpenseTotal(expense);
+
+        saveExpense(expense);
+    });
 }
 
 function updateName() {
     const expenseId = getExpenseId();
-    const expense = getExpense(expenseId);
-    const expenseName = document.querySelector('#expense-name');
-
-    expense.name = expenseName.value;
-
-    saveExpense(expense);
+    getExpense(expenseId).then(expense => {
+        const expenseName = document.querySelector('#expense-name');
+        expense.name = expenseName.value;
+        saveExpense(expense);
+    });
 }
 
 function updateExpensesView() {
@@ -62,23 +63,23 @@ function updateExpensesView() {
     const expensesListElement = document.querySelector('#expenses-list');
     const expenseElements = expensesListElement.querySelectorAll('.expense');
 
-    expenseElements.forEach(e => {
-        expensesListElement.removeChild(e);
+    getExpense(expenseId).then(expense => {
+        expenseElements.forEach(e => {
+            expensesListElement.removeChild(e);
+        });
+
+        const expenseName = document.querySelector('#expense-name');
+        expenseName.value = expense.name;
+    
+        expense.details.forEach(detail => {
+            const e = createExpenseDetailElement(detail);
+            e.addEventListener('input', () => { updateValues(); });
+            expensesListElement.appendChild(e);
+        });
+    
+        const totalField = expensesListElement.querySelector('.total-row .total');
+        totalField.innerHTML = getExpenseTotal(expense);
     });
-
-    const expense = getExpense(expenseId);
-
-    const expenseName = document.querySelector('#expense-name');
-    expenseName.value = expense.name;
-
-    expense.details.forEach(detail => {
-        const e = createExpenseDetailElement(detail);
-        e.addEventListener('input', () => { updateValues(); });
-        expensesListElement.appendChild(e);
-    });
-
-    const totalField = expensesListElement.querySelector('.total-row .total');
-    totalField.innerHTML = getExpenseTotal(expense);
 }
 
 document.addEventListener('DOMContentLoaded', function() {

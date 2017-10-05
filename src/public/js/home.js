@@ -12,17 +12,18 @@ function updateHomeView() {
     const expensesListElement = document.querySelector('#expenses-list');
     const expenseElements = expensesListElement.querySelectorAll('.expense');
 
-    expenseElements.forEach(e => {
-        expensesListElement.removeChild(e);
-    });
+    getExpenses().then(expenses => {
+        expenseElements.forEach(e => {
+            expensesListElement.removeChild(e);
+        });
 
-    const expenses = getExpenses();
-    expenses.forEach(expense => {
-        expensesListElement.appendChild(createExpenseElement(expense));
+        expenses.forEach(expense => {
+            expensesListElement.appendChild(createExpenseElement(expense));
+        });
+    
+        const totalField = expensesListElement.querySelector('.total-row .total');
+        totalField.innerHTML = getTotal(expenses);
     });
-
-    const totalField = expensesListElement.querySelector('.total-row .total');
-    totalField.innerHTML = getTotal();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -33,8 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     addBtn.addEventListener('mousedown', () => {
         const newExpense = createNewExpense();
-        const e = createExpenseElement(newExpense);
         saveExpense(newExpense);
-        expensesListElement.appendChild(e);
+        updateHomeView();
      });
 }, false);
