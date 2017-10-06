@@ -1,5 +1,6 @@
 const serverUrl = 'http://localhost:3000/';
-function serverClient(url, options) {
+function apiClient(url, options) {
+    options = options || {};
     if (!('fetch' in window)) {
         // Real fetch polyfill: https://github.com/github/fetch
         return new Promise( (resolve, reject) => {
@@ -8,20 +9,20 @@ function serverClient(url, options) {
             request.open(options.method || 'get', url);
 
             request.onload = () => {
-                resolve();
+                resolve(response());
             };
 
             request.onerror = reject;
 
             request.send(options.body);
 
-            function resolve() {
+            function response() {
                 return {
                     ok: (request.status/200|0) == 1,		// 200-299
                     status: request.status,
                     statusText: request.statusText,
                     url: request.responseURL,
-                    clone: resolve,
+                    clone: response,
                     text: () => Promise.resolve(request.responseText),
                     json: () => Promise.resolve(request.responseText).then(JSON.parse),
                     blob: () => Promise.resolve(new Blob([request.response]))
@@ -34,7 +35,7 @@ function serverClient(url, options) {
 }
 
 function saveExpense(expense) {
-    serverClient(`${serverUrl}api/expense/${expense.id || ''}`, {
+    apiClient(`${serverUrl}api/expense/${expense.id || ''}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -44,13 +45,13 @@ function saveExpense(expense) {
 }
 
 function getExpenses(cb) {
-    serverClient(`${serverUrl}api/expense`)
+    apiClient(`${serverUrl}api/expense`)
         .then(response => response.json())
         .then(cb);
 }
 
 function getExpense(expenseId, cb) {
-    serverClient(`${serverUrl}api/expense/${expenseId}`)
+    apiClient(`${serverUrl}api/expense/${expenseId}`)
             .then(response => response.json())
             .then(cb);
 }
