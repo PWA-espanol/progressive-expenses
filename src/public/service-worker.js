@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    var CACHE_NAME = 'static-cache';
-    var urlsToCache = [
+    const CACHE_NAME = 'static-cache';
+    const urlsToCache = [
         '.',
         'index.html',
         'css/bootstrap.css',
@@ -11,12 +11,12 @@
         'js/home.js'
     ];
 
-    self.addEventListener('install', function(event) {
+    self.addEventListener('install', (event) => {
         event.waitUntil(
             caches.open(CACHE_NAME)
-            .then(function(cache) {
-                return cache.addAll(urlsToCache);
-            })
+                .then(function(cache) {
+                    return cache.addAll(urlsToCache);
+                })
         );
     });
 
