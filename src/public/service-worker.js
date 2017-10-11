@@ -8,6 +8,7 @@
         'css/bootstrap.css',
         'css/custom.css',
         'js/common.js',
+        'js/expenses.js',
         'js/home.js'
     ];
 
@@ -26,10 +27,9 @@
         if (event.request.method != 'GET') return;
         if (event.request.url.indexOf('/api/') !== -1) return;
 
-        
         event.respondWith(
             caches.match(event.request)
-            .then(function(response) {
+            .then( response => {
                 return response || fetchAndCache(event.request);
             })
         );
@@ -37,18 +37,19 @@
 
     function fetchAndCache(url) {
         return fetch(url)
-        .then(function(response) {
+        .then(response => {
             // Check if we received a valid response
             if (!response.ok) {
                 throw Error(response.statusText);
             }
+
             return caches.open(CACHE_NAME)
-                .then(function(cache) {
+                .then(cache => {
                     cache.put(url, response.clone());
                     return response;
                 });
         })
-        .catch(function(error) {
+        .catch(error => {
             console.log('Request failed:', error);
             // You could return a custom offline 404 page here
         });
