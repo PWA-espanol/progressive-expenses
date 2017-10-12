@@ -17,3 +17,8 @@
 .form-control.cost {
     text-align: right;
 }
+
+.share {
+    color: #FFF;
+    cursor: pointer;
+}
