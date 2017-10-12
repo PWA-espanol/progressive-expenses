@@ -86,3 +86,16 @@ function getTotal(expenses) {
     return total;
 }
 
+function share(title) {
+    const url = window.location.href;
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            url: url,
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+        window.open("http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url), '_blank')
+    }
+}
