@@ -35,6 +35,41 @@
         );
     });
 
+    self.addEventListener('push', function(e) {
+
+        const options = {
+            body: 'Revisa el nuevo gasto del viaje',
+            icon: 'img/logo-512.png',
+            vibrate: [100, 50, 100],
+            data: {
+                primaryKey: 2
+            },
+            actions: [
+                {action: 'explore', title: 'Ir al sitio',
+                    icon: 'img/check.png'},
+                {action: 'close', title: 'Cerrar la notificación',
+                    icon: 'img/xmark.png'}
+            ]
+        };
+
+        e.waitUntil(
+            self.registration.showNotification('Push Notification', options)
+        );
+    });
+
+    self.addEventListener('notificationclick', function(e) {
+        const notification = e.notification;
+        const primaryKey = notification.data.primaryKey;
+        const action = e.action;
+
+        if (action === 'close') {
+            notification.close();
+        } else {
+            clients.openWindow('expense/' + primaryKey);
+            notification.close();
+        }
+    });
+
     function fetchAndCache(url) {
         return fetch(url)
         .then(response => {
