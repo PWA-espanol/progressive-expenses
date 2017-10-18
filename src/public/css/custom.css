@@ -1,3 +1,13 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    padding-bottom: 72px;
+    position: relative;
+}
+
 .total-container {
     position: relative;
 }
@@ -21,4 +31,11 @@
 .share {
     color: #FFF;
     cursor: pointer;
+}
+
+.footer {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
 }
