@@ -95,5 +95,5 @@ document.addEventListener('DOMContentLoaded', function() {
     addBtn.addEventListener('mousedown', () => { 
         const e = createExpenseDetailElement({ name: '', cost: 0 });
         expensesListElement.appendChild(e);
-     });
+    });
 }, false);

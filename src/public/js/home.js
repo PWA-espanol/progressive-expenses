@@ -110,3 +110,34 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 } else {
     console.warn('Push messaging is not supported');
 }
+
+
+const deleteBtn = document.querySelector('#delete');
+deleteBtn.addEventListener('mousedown', () => {
+    if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        navigator.serviceWorker.ready.then(function(reg) {
+            return reg.sync.register('delete-expenses');
+        }).catch(function() {
+            // No se pudo registrar el pedido de sincro,
+            // puede ser una restricción del sistema operativo
+            deleteExpenses();
+        });
+    } else {
+        // serviceworker/sync no soportado
+        deleteExpenses();
+    }
+});
+
+if (navigator.serviceWorker) {
+    window.addEventListener('message', event => { // non-standard Chrome behaviour
+        if (event.origin && event.origin !== location.origin) return;
+        onServiceWorkerMessage(event.data);
+    });
+    navigator.serviceWorker.addEventListener("message", event => onServiceWorkerMessage(event.data));
+}
+
+function onServiceWorkerMessage(message) {
+    if (message.action === 'updateHome') {
+        updateHomeView();
+    }
+}

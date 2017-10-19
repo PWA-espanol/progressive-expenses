@@ -19,12 +19,15 @@
                     return cache.addAll(urlsToCache);
                 })
         );
+        event.waitUntil(self.skipWaiting());
     });
+
+    self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
 
     self.addEventListener('fetch', function(event) {
         console.log(event.request.url);
 
-        if (event.request.method != 'GET') return;
+        if (event.request.method !== 'GET') return;
         if (event.request.url.indexOf('/api/') !== -1) return;
 
         event.respondWith(
@@ -67,6 +70,27 @@
         } else {
             clients.openWindow('expense/' + primaryKey);
             notification.close();
+        }
+    });
+
+    function broadcast(message) {
+        return clients.matchAll({includeUncontrolled: true, type: 'window'}).then(function(clients) {
+            for (var client of clients) {
+                client.postMessage(message);
+            }
+        });
+    }
+
+    self.addEventListener('sync', function(event) {
+        if (event.tag === 'delete-expenses') {
+            event.waitUntil(
+                fetch('/api/expense', {method: "delete"})
+                .then((response) => {
+                    if (response.ok) {
+                        broadcast({"action": "updateHome"})
+                    }
+                })
+            );
         }
     });
 

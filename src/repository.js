@@ -27,6 +27,10 @@ Repository.getExpense = function (id) {
     return ((result && result.length > 0) ? result[0] : undefined);
 };
 
+Repository.deleteExpenses = function () {
+    expensesStorage = [];
+};
+
 Repository.saveExpense = function (expense) {
     if (expense.id) {
         for (let index = 0; index < expensesStorage.length; index++) {
@@ -38,7 +42,7 @@ Repository.saveExpense = function (expense) {
             }
         }
     } else {
-        const maxId = Math.max.apply(Math, expensesStorage.map(o => o.id ));
+        const maxId = expensesStorage.length ? Math.max(...expensesStorage.map(o => o.id )) : 0;
         expense.id = maxId + 1;
     }
 

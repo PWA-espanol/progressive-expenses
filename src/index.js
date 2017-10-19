@@ -20,6 +20,12 @@ app.get('/api/expense/:id', function (req, res) {
   res.json(Repository.getExpense(id));
 });
 
+app.delete('/api/expense', function (req, res) {
+    console.log(`---- DELETE ('/api/expense')`);
+    Repository.deleteExpenses();
+    return res.json(Repository.getExpenses());
+});
+
 app.post('/api/expense/:id', function (req, res) {
   console.log(`---- POST ('/api/expense/${req.params.id}')
 ---- ---- Body: ${JSON.stringify(req.body)}`);

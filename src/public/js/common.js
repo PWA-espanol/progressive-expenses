@@ -44,6 +44,17 @@ function saveExpense(expense) {
     });
 }
 
+function deleteExpenses() {
+    apiClient(`${serverUrl}api/expense`, {method: 'DELETE'})
+        .then((response) => {
+            if (response.ok) {
+                updateHomeView();
+            } else {
+                alert("Error deleting expenses");
+            }
+        })
+}
+
 function getExpenses(cb) {
     apiClient(`${serverUrl}api/expense`)
         .then(response => response.json())
@@ -57,10 +68,7 @@ function getExpense(expenseId, cb) {
 }
 
 function createNewExpense() {
-    //const expenses = getExpenses();
-    //let maxId = Math.max.apply(Math, expenses.map(o => o.id ));
-    return { 
-        //id: maxId + 1,
+    return {
         name: 'Nombre',
         details: []
     };
