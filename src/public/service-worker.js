@@ -62,12 +62,12 @@
 
     self.addEventListener('notificationclick', function(e) {
         const notification = e.notification;
-        const primaryKey = notification.data.primaryKey;
         const action = e.action;
 
         if (action === 'close') {
             notification.close();
-        } else {
+        } else if (notification.data) {
+            const primaryKey = notification.data.primaryKey;
             clients.openWindow('expense/' + primaryKey);
             notification.close();
         }
