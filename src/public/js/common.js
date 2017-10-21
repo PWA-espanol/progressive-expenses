@@ -4,11 +4,14 @@ function apiClient(url, options, success, error) {
     let request = new XMLHttpRequest();
     
     request.open(options.method || 'get', url);
+    request.setRequestHeader('Content-type', 'application/json');
 
     request.onload = () => {
         if (request.status == 200 && request.getResponseHeader('Content-Type').indexOf('application/json') !== -1) {
             const responseObj = JSON.parse(request.response);
-            success(responseObj);
+            if (success) {
+                success(responseObj);
+            }
         } else {
             throw new TypeError();
         }
