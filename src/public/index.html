@@ -7,7 +7,8 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="./favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v2" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v2" />
 
     <title>Home - Progressive expenses</title>
 
@@ -42,15 +43,12 @@
         </div>
 
         <div class="row justify-content-center mt-4 pb-4">
-          <div class="col col-sm-8">
+          <div class="col col-sm-10">
             <button id="add" class="btn btn-primary btn-block">Agregar gasto</button>
-          </div>
-          <div class="col col-sm-2">
-            <button id="notify" disabled onclick="displayNotification()" class="btn btn-primary btn-block">Notificar</button>
           </div>
         </div>
 
-        <div class="row justify-content-center pb-4">
+        <div class="row justify-content-center mt-4 pb-4">
           <div class="col col-sm-10">
             <button id="delete" class="btn btn-outline-danger btn-block">Eliminar todos los gastos</button>
           </div>
@@ -64,7 +62,9 @@
       </div>
     </footer>
 
+    <script src="/js/utils.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/notifications.js"></script>
     <script src="/js/home.js"></script>
     <script src="/js/sw-registration.js"></script>
   </body>

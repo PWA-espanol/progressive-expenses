@@ -7,6 +7,7 @@ function apiClient(url, options) {
             let request = new XMLHttpRequest();
             
             request.open(options.method || 'get', url);
+            request.setRequestHeader('Content-type', 'application/json');
 
             request.onload = () => {
                 resolve(response());
@@ -34,25 +35,25 @@ function apiClient(url, options) {
     return fetch(url, options);
 }
 
-function saveExpense(expense) {
+function saveExpense(expense, cb) {
     apiClient(`${serverUrl}api/expense/${expense.id || ''}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(expense)
-    });
+    }).then(cb);
 }
 
-function deleteExpenses() {
+function deleteExpenses(cb) {
     apiClient(`${serverUrl}api/expense`, {method: 'DELETE'})
         .then((response) => {
             if (response.ok) {
-                updateHomeView();
+                cb();
             } else {
                 alert("Error deleting expenses");
             }
-        })
+        });
 }
 
 function getExpenses(cb) {
