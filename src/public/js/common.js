@@ -6,7 +6,7 @@ function apiClient(url, options, success, error) {
     request.open(options.method || 'get', url);
 
     request.onload = () => {
-        if (request.status == 200 && request.getResponseHeader('Content-Type') == 'application/json') {
+        if (request.status == 200 && request.getResponseHeader('Content-Type').indexOf('application/json') !== -1) {
             const responseObj = JSON.parse(request.response);
             success(responseObj);
         } else {
@@ -19,14 +19,14 @@ function apiClient(url, options, success, error) {
     request.send(options.body);
 }
 
-function saveExpense(expense) {
+function saveExpense(expense, cb) {
     apiClient(`${serverUrl}api/expense/${expense.id || ''}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(expense)
-    });
+    }, cb);
 }
 
 function deleteExpenses(cb) {

@@ -32,8 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const addBtn = document.querySelector('#add');
     addBtn.addEventListener('mousedown', () => {
         const newExpense = createNewExpense();
-        saveExpense(newExpense);
-        updateHomeView();
+        saveExpense(newExpense, () => {
+            updateHomeView(); 
+        });
      });
 
 
