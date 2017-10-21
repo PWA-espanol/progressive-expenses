@@ -1,70 +1,48 @@
 const serverUrl = 'http://localhost:3000/';
-function apiClient(url, options) {
+function apiClient(url, options, success, error) {
     options = options || {};
-    if (!('fetch' in window)) {
-        // Real fetch polyfill: https://github.com/github/fetch
-        return new Promise( (resolve, reject) => {
-            let request = new XMLHttpRequest();
-            
-            request.open(options.method || 'get', url);
+    let request = new XMLHttpRequest();
+    
+    request.open(options.method || 'get', url);
 
-            request.onload = () => {
-                resolve(response());
-            };
+    request.onload = () => {
+        if (request.status == 200 && request.getResponseHeader('Content-Type') == 'application/json') {
+            const responseObj = JSON.parse(request.response);
+            success(responseObj);
+        } else {
+            throw new TypeError();
+        }
+    };
 
-            request.onerror = reject;
+    request.onerror = error;
 
-            request.send(options.body);
-
-            function response() {
-                return {
-                    ok: (request.status/200|0) == 1,		// 200-299
-                    status: request.status,
-                    statusText: request.statusText,
-                    url: request.responseURL,
-                    clone: response,
-                    text: () => Promise.resolve(request.responseText),
-                    json: () => Promise.resolve(request.responseText).then(JSON.parse),
-                    blob: () => Promise.resolve(new Blob([request.response]))
-                };
-            };
-        });
-    }
-
-    return fetch(url, options);
+    request.send(options.body);
 }
 
 function saveExpense(expense) {
     apiClient(`${serverUrl}api/expense/${expense.id || ''}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(expense)
     });
 }
 
-function deleteExpenses() {
-    apiClient(`${serverUrl}api/expense`, {method: 'DELETE'})
-        .then((response) => {
-            if (response.ok) {
-                updateHomeView();
-            } else {
-                alert("Error deleting expenses");
-            }
-        })
+function deleteExpenses(cb) {
+    try {
+        apiClient(`${serverUrl}api/expense`, { method: 'DELETE' }, cb);
+    } catch (error) {
+        alert("Error deleting expenses");
+    }
 }
 
 function getExpenses(cb) {
-    apiClient(`${serverUrl}api/expense`)
-        .then(response => response.json())
-        .then(cb);
+    apiClient(`${serverUrl}api/expense`, {}, cb)
 }
 
 function getExpense(expenseId, cb) {
-    apiClient(`${serverUrl}api/expense/${expenseId}`)
-            .then(response => response.json())
-            .then(cb);
+    apiClient(`${serverUrl}api/expense/${expenseId}`, {}, cb);
 }
 
 function createNewExpense() {
@@ -96,14 +74,5 @@ function getTotal(expenses) {
 
 function share(title) {
     const url = window.location.href;
-    if (navigator.share) {
-        navigator.share({
-            title: title,
-            url: url,
-        })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error));
-    } else {
-        window.open("http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url), '_blank')
-    }
+    window.open("http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url), '_blank');
 }
