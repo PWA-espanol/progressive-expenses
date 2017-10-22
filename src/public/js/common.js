@@ -104,6 +104,6 @@ function share(title) {
         .then(() => console.log('Successful share'))
         .catch((error) => console.log('Error sharing', error));
     } else {
-        window.open("http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url), '_blank')
+        window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) + "&url=" + encodeURIComponent(url), '_blank');
     }
 }
