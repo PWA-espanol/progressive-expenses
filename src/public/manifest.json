@@ -3,6 +3,7 @@
     "lang": "en",
     "name": "Progressive Expenses",
     "scope": "/",
+    "display_override": ["fullscreen", "minimal-ui"],
     "display": "standalone",
     "start_url": "http://localhost:3000/?utm_source=pwa&utm_medium=pwasite&utm_campaign=start",
     "short_name": "PE",
@@ -27,6 +28,15 @@
         "src": "http://localhost:3000/img/logo-512.png",
         "type": "image/png",
         "sizes": "512x512"
+      }
+    ],
+    "screenshots": [
+      {
+       "src": "img/screenshots-wide.png",
+        "sizes": "1532x839",
+        "type": "image/png",
+        "form_factor": "wide",
+        "label": "Progressive Expenses"
       }
     ]
   }
